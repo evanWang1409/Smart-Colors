@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Local Library</title>
+</head>
+
+<body>
+    <div class=video>
+        <center>
+            <video id="video" width="640" height="480" autoplay></video>
+        </center>
+        <button>Search</button>
+        <button>Reset</button>
+    </div>
+    <script type="text/javascript">
+        var video = document.getElementById('video');
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+            video.src = window.URL.createObjectURL(stream);
+            video.play();
+            });
+        }
+    </script>
+</body>
+</html>
