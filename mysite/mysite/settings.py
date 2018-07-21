@@ -63,6 +63,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media'
             ],
         },
     },
@@ -100,7 +101,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+MEDIA_ROOT = '/var/www/testsite/apache/media/'
+MEDIA_URL = '/sitemedia/'
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
