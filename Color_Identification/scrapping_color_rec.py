@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 kmeans = KMeans(10)
 
 img_dir = '/Users/evnw/Programming/Colors/Smart-Colors/Color_Identification/Test_img'
-img_path = os.path.join(img_dir, 'test_img3.jpg')
+img_path = os.path.join(img_dir, 'test.jpg')
 
 res_dir = '/Users/evnw/Programming/Colors/Smart-Colors/Color_Identification/Test_img'
 
@@ -70,7 +70,7 @@ def color_rec(im):
 	colors_final = np.delete(colors_final, closest_BGR_index, 0)
 
 
-	#plt.imshow([colors_final]);plt.show()
+	plt.imshow([colors_final]);plt.show()
 
 	print(colors_final)
 
