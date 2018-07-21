@@ -13,18 +13,21 @@ class color(models.Model):
         return jsonDec.decode(self.combination)
 
 class pic(models.Model):
-    '''GENDER = (
+    GENDER = (
         ('M', 'Men'),
         ('W', 'Women')
-    )'''
+    )
     name = models.CharField(default="", max_length=200)
     url = models.TextField(default="", primary_key=True)
-    gender = models.CharField(max_length=1, default="M") #//choices=GENDER)
+    gender = models.CharField(max_length=1, default="M", choices=GENDER)
     colors = models.ForeignKey(color, default="", on_delete=models.CASCADE) # colors within this picture
 
     def __str__(self):
         return "Name: %s, URL: %s, Gender: %s" % (self.name, self.url, self.gender)
 
+    def __eq__(self, other):
+        return self.url == other.url
+        
     def getName(self):
         return self.name
 

@@ -8,6 +8,7 @@ import json
 from rest_framework.decorators import api_view
 import webcolors
 import numpy as np
+
 # Create your views here.
 
 targetColor = "#000000"
@@ -27,7 +28,6 @@ def getClothesFrom(targetColor, allClothes):
     target_RGB = webcolors.hex_to_rgb(targetColor)
     min_dist = 9999999
     closest_color = None
-    closest_obj = None
     for clothObj in allClothes:
         colorList = jsonDec.decode(clothObj.colors.combination)
         if targetColor in colorList:
@@ -36,27 +36,23 @@ def getClothesFrom(targetColor, allClothes):
         local_closest_color = None
         for color_hex in colorList:
             color_rgb = webcolors.hex_to_rgb(color_hex)
-            color1 = color_rgb
-            color2 = target_RGB
-            dist = np.sqrt((int(color1[0]) - int(color2[0]))**2 + (int(color1[1]) - int(color2[1]))**2 + (int(color1[2]) - int(color2[2]))**2)
+            dist = color_dist(target_RGB, color_rgb)
             if dist < local_min_dist:
                 local_min_dist = dist
                 local_closest_color = color_hex
         if local_min_dist < min_dist:
             min_dist = local_min_dist
             closest_color = local_closest_color
-            closest_obj = clothObj
-        #print(closest_obj)
 
-    backup_result = [closest_obj]
+    backup_result = [closest_color]
 
     if len(result) == 0:
         return backup_result
 
     return result
 
-#def color_dist(color1, color2):
-#    return np.sqrt((int(color1[0]) - int(color2[0]))**2 + (int(color1[1]) - int(color2[1]))**2 + (int(color1[2]) - int(color2[2]))**2)
+def color_dist(color1, color2):
+    return np.sqrt((int(color1[0]) - int(color2[0]))**2 + (int(color1[1]) - int(color2[1]))**2 + (int(color1[2]) - int(color2[2]))**2)
 
 @api_view(['GET', 'POST'])
 def getColorData(request):
@@ -74,15 +70,12 @@ def index(request):
     allColors = color.objects.all()
     getColors = getFrom(targetColor, allColors)
     allClothes = pic.objects.all()
-    getClothes = []
-    for colorObj in getColors:
-        # for colorObj in colorObjList:
-        ccolor = jsonDec.decode(colorObj.combination)
-        for colorOb in ccolor:
-            getClothes += getClothesFrom(colorOb, allClothes)
-    getClothes = list(set(getClothes))
+    #for ccolor in getColors:
+    ccolor = jsonDec.decode(getColors[0].combination)
+    getClothes = getClothesFrom(ccolor, allClothes)
     if request.method == "POST":
         selectedColor = getColorData(request)
+        print(selectedColor)
         return render(
         request,
         'index.html',
