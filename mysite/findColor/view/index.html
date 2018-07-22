@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Smart Colors</title>
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
+    <!-- css -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="/site_media/jpegcam/webcam.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+</head>
+<style>
+    body,h1,h2,h3,h4,h5,h6 {
+        font-family: "Raleway", sans-serif
+    }
+    .container {
+    position: relative;
+    width: 50%;
+    }
+
+    .image {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+    }
+
+    .middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+    }
+
+.container:hover .image {
+  opacity: 0.3;
+}
+
+.container:hover .middle {
+  opacity: 1;
+}
+</style>
+<body>
+    <header class="w3-container w3-light-blue w3-xlarge w3-padding-8">
+        <span class="w3-left w3-padding" style="color:white;">SMART COLORS</span>
+        <!--a href="javascript:void(0)" class="w3-right w3-button w3-white" onclick="w3_open()">☰</a-->
+    </header>
+    <div class="w3-main w3-content" style="max-width:1600px;margin-top:63px">
+        <div class="video" style="top:20px">
+            <!--h1>{{ color.combination }}</h1-->
+            <div class="w3-row">
+                <div class="w3-col w3-center m6 l6">
+                    <!--video id="video" width="640" height="480" autoplay></video-->
+                    <video onclick="snapshot(this);" width="620" height="450" id="video" muted="muted"></video>
+                    <button class="w3-button w3-light-grey w3-padding-large w3-margin-top w3-margin-bottom w3-hover-black" onClick="snapshot()" type="button">
+                        Snapshot
+                    </button>
+                </div>
+                <div class="w3-col w3-center m6 l6">
+                    <canvas id="myCanvas" width="620" height="450"></canvas>
+                    <!--input id="id_image" type="file" class="" name="image"-->
+                </div>
+            </div>
+            <div class="w3-container w3-center w3-light-blue w3-text-white w3-padding-32" id="about">
+                <p style="font-size:24px; margin-left:20px">COLOR COMBINATION</p>
+                {% for colorComb in color_all %}
+                    <div style="padding: 32px">
+                        <p>{{ colorComb }}</p>
+                        <p>{{ colorComb.getColors|length }}</p>
+                    {% if colorComb.getColors|length == 4 %}
+                        {% for color in colorComb.getColors %}
+                        <a onclick="function(){console.log('{{ color }}')}" style="background-color: {{color}}; width:25%; padding:16px"> {{ color }} </a>
+                        {% endfor %}
+                    {% elif colorComb.getColors|length == 5 %}
+                        {% for color in colorComb.getColors %}
+                        <a onclick="function(){console.log('{{ color }}')}"style="background-color: {{color}}; width:20%; padding:16px"> {{ color }} </a>
+                        {% endfor %}
+                    {% elif colorComb.getColors|length == 1 %}
+                        {% for color in colorComb.getColors %}
+                        <a onclick="function(){console.log('{{ color }}')}"style="background-color: {{color}}; width:40%; padding:16px"> {{ color }} </a>
+                        {% endfor %}
+                    {% elif colorComb.getColors|length == 2 %}
+                        {% for color in colorComb.getColors %}
+                        <a onclick="function(){console.log('{{ color }}')}"style="background-color: {{color}}; width:35%; padding:16px"> {{ color }} </a>
+                        {% endfor %}
+                    {% elif colorComb.getColors|length == 3 %}
+                        {% for color in colorComb.getColors %}
+                        <a onclick="function(){console.log('{{ color }}')}"style="background-color: {{color}}; width:25%; padding:16px"> {{ color }} </a>
+                        {% endfor %}
+                    {% elif colorComb.getColors|length == 6 %}
+                        {% for color in colorComb.getColors %}
+                        <a onclick="function(){console.log('{{ color }}')}"style="background-color: {{color}}; width:15%; padding:16px"> {{ color }} </a>
+                        {% endfor %}
+                    {% elif colorComb.getColors|length == 7 %}
+                        {% for color in colorComb.getColors %}
+                        <a onclick="function(){console.log('{{ color }}')}"style="background-color: {{color}}; width:12%; padding:16px"> {{ color }} </a>
+                        {% endfor %}
+                    {% elif colorComb.getColors|length == 8 %}
+                        {% for color in colorComb.getColors %}
+                        <a onclick="function(){console.log('{{ color }}')}"style="background-color: {{color}}; width:8%; padding:16px"> {{ color }} </a>
+                        {% endfor %}
+                    {% elif colorComb.getColors|length == 9 %}
+                        {% for color in colorComb.getColors %}
+                        <a onclick="function(){console.log('{{ color }}')}"style="background-color: {{color}}; width:5%; padding:16px"> {{ color }} </a>
+                        {% endfor %}
+                    {% endif %} 
+                    </div>
+                {% endfor %}
+                <p>{{ selected }}</p>
+            </div>
+
+            <div class="w3-container w3-light-grey w3-text-dark-blue w3-padding-32" id="about">
+                <p class="w3-center" style="font-size:24px; margin-left:20px">FASHION ADVICE</p>
+                <div class="w3-center">
+                {% for clothObj in clothes %}
+                    <div class="container w3-center" style="width:20%;float:left;margin-left:40px;margin-top:20px">
+                        <img src="{{ clothObj.url }}" class="image" style="width:100%">
+                        <div class="middle">
+                            <div class="text" style="background-color: #85adad; color: white;font-size: 16px;padding: 16px 32px;">{{ clothObj.name }}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <footer class="w3-container w3-padding-32 w3-light-blue">  
+            <div class="w3-center">
+                <h4>SMART COLOR</h4>
+                <i class="fa fa-github" href="#" style="cursor:pointer;font-size:30px"></i>
+                <p style="font-size:8px">Modified from W3.CSS Template</p>    
+            </div>
+        </footer>
+    </div>
+    <script type="text/javascript">
+        var video = document.getElementById('video');
+        var canvas, ctx;
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+            video.src = window.URL.createObjectURL(stream);
+            video.play();
+            });
+        }
+
+        function snapshot() {
+            var canvas, ctx;
+            canvas = document.getElementById("myCanvas");
+            ctx = canvas.getContext('2d');
+            // Draws current image from the video element into the canvas
+            var img = ctx.drawImage(video, 0,0, canvas.width, canvas.height);
+            saveFile(canvas);
+            $.ajax({
+                url: "",
+                type: "POST",
+                data: "b",
+                //contentType: "application/json",        
+            });
+        }
+
+        function getClothes(text) {
+            var color = text;
+            console.log(color);
+            $.ajax({
+                url: "",
+                type: "POST",
+                data: "b",
+                //contentType: "application/json",        
+            });
+        }
+
+        function saveFile(canvas) {
+            /*
+            var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");  // here is the most important part because if you dont replace you will get a DOM 18 exception.
+            aLink = document.createElement
+            aLink.download = "image.png";
+            window.location.href=image;*/
+            //var canvas = document.getElementById("thecanvas");
+            var link = document.createElement('a');
+            link.setAttribute('download', 'image.png');
+            link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
+            link.click();
+        }
+        
+    </script>
+
+</body>
+</html>

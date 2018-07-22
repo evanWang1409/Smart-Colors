@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Smart Colors</title>
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Slabo" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <!-- css -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="/site_media/jpegcam/webcam.js"></script>
+</head>
+<style>
+    body,h1,h2,h3,h4,h5,h6 {
+        font-family: "Raleway", sans-serif
+    }
+</style>
+<body>
+    <header class="w3-container w3-light-blue w3-xlarge w3-padding-8">
+        <span class="w3-left w3-padding" style="color:white;">SMART COLORS</span>
+        <!--a href="javascript:void(0)" class="w3-right w3-button w3-white" onclick="w3_open()">☰</a-->
+    </header>
+    <div class="w3-main w3-content" style="max-width:1600px;margin-top:63px">
+        <div class="video" style="top:20px">
+            <!--h1>{{ color.combination }}</h1-->
+            <div class="w3-row">
+                <div class="w3-col m6 l6">
+                    <!--video id="video" width="640" height="480" autoplay></video-->
+                    <video onclick="snapshot(this);" width="600" height="450" id="video" style="margin-left:20px;margin-right:20px"></video>
+                </div>
+                <div class="w3-col m6 l6">
+                    <canvas id="myCanvas" width="600" height="450"></canvas>
+                    <button class="w3-button w3-light-grey w3-padding-large w3-margin-top w3-margin-bottom w3-hover-black" onClick="snapshot()" type="button">
+                        Snapshot
+                    </button>
+                    <!--input id="id_image" type="file" class="" name="image"-->
+                </div>
+            </div>
+            <div class="w3-container w3-center w3-light-blue w3-text-white w3-padding-32" id="about">
+                <p style="font-size:24px; margin-left:20px">COLOR COMBINATION</p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var video = document.getElementById('video');
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+            video.src = window.URL.createObjectURL(stream);
+            video.play();
+            });
+        }
+        function snapshot() {
+            var canvas, ctx;
+            canvas = document.getElementById("myCanvas");
+            ctx = canvas.getContext('2d');
+            // Draws current image from the video element into the canvas
+            var im = ctx.drawImage(video, 0,0, canvas.width, canvas.height);
+
+        }
+    </script>
+
+</body>
+</html>
